@@ -4,6 +4,8 @@ import com.dh.clinica.model.Turno;
 import com.dh.clinica.service.OdontologoService;
 import com.dh.clinica.service.PacienteService;
 import com.dh.clinica.service.TurnoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequestMapping("/turnos")
 public class TurnoController {
 
+    Logger logger= LoggerFactory.getLogger(TurnoController.class);
     @Autowired
     private TurnoService turnoService;
     @Autowired
@@ -28,6 +31,7 @@ public class TurnoController {
             turnoService.registrarTurno(turno);
             return ResponseEntity.ok("Turno registrado con exito.");
         } else {
+            logger.error("Error: no se pudo registrar el turno");
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -45,6 +49,7 @@ public class TurnoController {
             turnoService.eliminar(id);
             response = ResponseEntity.ok("Turno eliminado con exito.");
         } else {
+            logger.error("Error: no se pudo eliminar el turno");
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return response;
@@ -57,6 +62,7 @@ public class TurnoController {
             turnoService.actualizar(turno);
             return ResponseEntity.ok("Turno actualizado con exito.");
         } else {
+            logger.error("Error: no se pudo actualizar el turno");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

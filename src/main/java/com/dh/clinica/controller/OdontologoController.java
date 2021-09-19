@@ -3,6 +3,9 @@ package com.dh.clinica.controller;
 import com.dh.clinica.model.Odontologo;
 
 import com.dh.clinica.service.OdontologoService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/odontologos")
 public class OdontologoController {
+
+    Logger logger= LoggerFactory.getLogger(OdontologoController.class);
+
     @Autowired
     private OdontologoService odontologoService;
 
@@ -26,6 +32,7 @@ public class OdontologoController {
     @GetMapping("/{id}")
     public ResponseEntity<Odontologo> buscar(@PathVariable Integer id) {
         Odontologo odontologo = odontologoService.buscar(id).orElse(null);
+        logger.info("Odontologo buscado "+odontologoService.buscar(id));
         return ResponseEntity.ok(odontologo);
     }
 
@@ -41,8 +48,10 @@ public class OdontologoController {
         ResponseEntity<String> response = null;
         if (odontologoService.buscar(id).isPresent()) {
             odontologoService.eliminar(id);
+            logger.info("Odontologo eliminado "+odontologoService.buscar(id));
             response = ResponseEntity.ok("Odontologo eliminado con exito.");
         } else {
+            logger.error("Error: no se pudo eliminar odontologo");
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
