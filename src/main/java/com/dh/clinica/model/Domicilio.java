@@ -15,9 +15,6 @@ public class Domicilio {
     private String localidad;
     private String provincia;
 
-/*    @OneToOne(mappedBy = "domicilio")
-    private Paciente paciente;*/
-
     public Domicilio() {
     }
 
@@ -75,13 +72,6 @@ public class Domicilio {
         this.provincia = provincia;
     }
 
-   /* public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }*/
 
     @Override
     public String toString() {

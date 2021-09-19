@@ -1,7 +1,5 @@
 package com.dh.clinica.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,7 +12,6 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "turno_sequence")
     private Integer id;
 
-    //Con FetchType LAZY dá error 500
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;

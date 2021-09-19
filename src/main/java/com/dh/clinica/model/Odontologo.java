@@ -1,8 +1,7 @@
 package com.dh.clinica.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @Table
@@ -15,8 +14,7 @@ public class Odontologo {
     private String nombre;
     private String apellido;
     private Integer matricula;
-  /*  @OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY)
-    private Set<Turno> turnos = new HashSet<>();*/
+
 
     public Odontologo() {
     }
