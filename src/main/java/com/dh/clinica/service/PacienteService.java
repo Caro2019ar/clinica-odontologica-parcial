@@ -1,7 +1,7 @@
 package com.dh.clinica.service;
 
 
-import com.dh.clinica.exception.NoEncontradoException;
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Paciente;
 import com.dh.clinica.repository.impl.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class PacienteService {
     }
 
     public Paciente guardar(Paciente p) {
-       return pacienteRepository.save(p);
+        return pacienteRepository.save(p);
     }
 
     public Optional<Paciente> buscar(Integer id) {
@@ -38,9 +38,9 @@ public class PacienteService {
 
 
 
-    public Paciente actualizar(Paciente p) {
+    public Paciente actualizar(Paciente p) throws ResourceNotFoundException {
         Optional<Paciente> pacienteDB = this.pacienteRepository.findById(p.getId());
-      if(pacienteDB.isPresent()){
+        if(pacienteDB.isPresent()){
             Paciente pacienteActualizado = pacienteDB.get();
             pacienteActualizado.setId(p.getId());
             pacienteActualizado.setNombre(p.getNombre());
@@ -51,7 +51,7 @@ public class PacienteService {
             pacienteRepository.save(pacienteActualizado);
             return pacienteActualizado;
         } else {
-        throw new NoEncontradoException("Paciente no encontrado");
+            throw new ResourceNotFoundException("Paciente no encontrado");
         }
     }
 }

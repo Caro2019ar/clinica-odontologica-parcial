@@ -1,5 +1,6 @@
 package com.dh.clinica.controller;
 
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Paciente;
 import com.dh.clinica.service.PacienteService;
 import org.slf4j.Logger;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/pacientes")
@@ -31,7 +35,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> actualizar(@PathVariable("id") Integer id, @RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> actualizar(@PathVariable("id") Integer id, @RequestBody Paciente paciente) throws ResourceNotFoundException {
         paciente.setId(id);
         ResponseEntity<Paciente> response = null;
         if (id!= null && pacienteService.buscar(paciente.getId()).isPresent()) {
@@ -60,4 +64,10 @@ public class PacienteController {
 
         return response;
     }
+
+    @GetMapping
+    public ResponseEntity<List<Paciente>> buscarTodos(){
+        return ResponseEntity.ok(pacienteService.buscarTodos());
+    }
+
 }

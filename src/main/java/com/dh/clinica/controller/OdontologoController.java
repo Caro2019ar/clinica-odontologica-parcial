@@ -1,5 +1,6 @@
 package com.dh.clinica.controller;
 
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Odontologo;
 
 import com.dh.clinica.service.OdontologoService;
@@ -37,24 +38,22 @@ public class OdontologoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Odontologo> actualizar(@PathVariable("id") Integer id, @RequestBody Odontologo odontologo) {
+    public ResponseEntity<Odontologo> actualizar(@PathVariable("id") Integer id, @RequestBody Odontologo odontologo) throws ResourceNotFoundException {
         odontologo.setId(id);
         return  ResponseEntity.ok(odontologoService.actualizar(odontologo));
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<String> eliminar(@PathVariable Integer id) throws ResourceNotFoundException{
         ResponseEntity<String> response = null;
         if (odontologoService.buscar(id).isPresent()) {
             odontologoService.eliminar(id);
             logger.info("Odontologo eliminado "+odontologoService.buscar(id));
             response = ResponseEntity.ok("Odontologo eliminado con exito.");
         } else {
-            logger.error("Error: no se pudo eliminar odontologo");
-            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ResourceNotFoundException("No existe odontologo con id: "+id);
         }
-
         return response;
     }
     @GetMapping

@@ -1,6 +1,6 @@
 package com.dh.clinica.service;
 
-import com.dh.clinica.exception.NoEncontradoException;
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Odontologo;
 import com.dh.clinica.repository.impl.OdontologoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class OdontologoService {
         return odontologoRepository.findAll();
     }
 
-    public Odontologo actualizar(Odontologo odontologo) {
+    public Odontologo actualizar(Odontologo odontologo) throws ResourceNotFoundException{
         Optional<Odontologo> odontologoDB= this.odontologoRepository.findById(odontologo.getId());
         if(odontologoDB.isPresent()){
             Odontologo odontoActual = odontologoDB.get();
@@ -47,7 +47,7 @@ public class OdontologoService {
             odontologoRepository.save(odontoActual);
             return odontoActual;
         } else {
-            throw new NoEncontradoException("Odontologo no encontrado");
+            throw new ResourceNotFoundException("Odontologo no encontrado");
         }
 
     }
