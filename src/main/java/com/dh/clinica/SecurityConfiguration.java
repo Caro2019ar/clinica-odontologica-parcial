@@ -1,4 +1,4 @@
-package com.dh.clinica.service;
+package com.dh.clinica;
 
 import com.dh.clinica.service.auth.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated().and()
-                .formLogin();
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().permitAll()
+                .and()
+                .logout().permitAll();
+
     }
 
     @Override
