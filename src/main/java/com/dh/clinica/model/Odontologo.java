@@ -1,5 +1,9 @@
 package com.dh.clinica.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 
@@ -9,7 +13,7 @@ public class Odontologo {
 
     @Id
     @SequenceGenerator(name = "odontologo_sequence", sequenceName = "odontologo_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "odontologo_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "odontologo_sequence")
     private Integer id;
     private String nombre;
     private String apellido;

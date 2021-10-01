@@ -1,11 +1,8 @@
 package com.dh.clinica.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -21,7 +18,7 @@ public class Paciente {
     private String apellido;
     private String dni;
     @CreationTimestamp
-    private Date fechaIngreso;
+    private Date fechaHoraIngreso;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Domicilio domicilio;
@@ -29,12 +26,12 @@ public class Paciente {
     public Paciente() {
     }
 
-    public Paciente(Integer id, String nombre, String apellido, String dni, Date fechaIngreso, Domicilio domicilio) {
+    public Paciente(Integer id, String nombre, String apellido, String dni, Date fechaHoraIngreso, Domicilio domicilio) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-        this.fechaIngreso = fechaIngreso;
+        this.fechaHoraIngreso = fechaHoraIngreso;
         this.domicilio = domicilio;
     }
 
@@ -45,12 +42,12 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    public Paciente(String nombre, String apellido, String dni, Date fechaIngreso, Domicilio domicilio) {
+    public Paciente(String nombre, String apellido, String dni, Date fechaHoraIngreso, Domicilio domicilio) {
 
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-        this.fechaIngreso = fechaIngreso;
+        this.fechaHoraIngreso = fechaHoraIngreso;
         this.domicilio = domicilio;
     }
 
@@ -87,12 +84,12 @@ public class Paciente {
         this.dni = dni;
     }
 
-    public Date getFechaIngreso() {
-        return fechaIngreso;
+    public Date getFechaHoraIngreso() {
+        return fechaHoraIngreso;
     }
 
-    public void setFechaIngreso(Date fechaIngreso) {
-        this.fechaIngreso = fechaIngreso;
+    public void setFechaHoraIngreso(Date fechaHoraIngreso) {
+        this.fechaHoraIngreso = fechaHoraIngreso;
     }
 
     public Domicilio getDomicilio() {
@@ -103,13 +100,6 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-   /* public Set<Turno> getTurnos() {
-        return turnos;
-    }
-
-    public void setTurnos(Set<Turno> turnos) {
-        this.turnos = turnos;
-    }*/
 
     @Override
     public String toString() {
@@ -118,7 +108,7 @@ public class Paciente {
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", dni='" + dni + '\'' +
-                ", fechaIngreso=" + fechaIngreso +
+                ", fechaIngreso=" + fechaHoraIngreso +
                 ", domicilio=" + domicilio +
                 '}';
     }

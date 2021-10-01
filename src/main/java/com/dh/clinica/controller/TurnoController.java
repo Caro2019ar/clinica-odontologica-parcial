@@ -27,7 +27,7 @@ public class TurnoController {
 
     @PostMapping
     public ResponseEntity<String> registrarTurno(@RequestBody Turno turno) {
-        if (pacienteService.buscar(turno.getPaciente().getId()).isPresent() && odontologoService.buscar(turno.getOdontologo().getId()).isPresent()) {
+        if (pacienteService.buscar(turno.getPaciente().getId()).isPresent() && odontologoService.buscar(turno.getOdontologo().getId())!=null) {
             turnoService.registrarTurno(turno);
             return ResponseEntity.ok("Turno registrado con exito.");
         } else {

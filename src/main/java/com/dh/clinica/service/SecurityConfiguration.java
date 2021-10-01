@@ -1,4 +1,4 @@
-package com.dh.clinica;
+package com.dh.clinica.service;
 
 import com.dh.clinica.service.auth.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
