@@ -29,11 +29,11 @@ public class Turno {
     public Turno() {
     }
 
-    public Turno(Paciente paciente, Odontologo odontologo, Date date) {
+  /*  public Turno(Paciente paciente, Odontologo odontologo, Date date) {
         this.paciente = paciente;
         this.odontologo = odontologo;
         this.date = date;
-    }
+    }*/
 
     public Integer getId() {
         return id;

@@ -38,19 +38,17 @@ public class TurnoServiceTest {
     ObjectMapper mapper;
 
     @BeforeEach
-    public void cargarDataSet() {
-        Paciente paciente = this.pacienteService.guardar(new PacienteDTO("Santiago", "Paz", "88888888", new Domicilio(
+    public void cargarDataTurno() {
+        Turno turno = new Turno();
+        turno.setOdontologo(new Odontologo("Santiago", "Paz",
+                3455647));
+        turno.setPaciente(new Paciente("Santiago", "Paz", "88888888", new Domicilio(
                 "Av " +
                         "Santa fe", "444", "CABA", "Buenos Aires")));
-        Odontologo odontologo = this.odontologoService.registrarOdontologo(new OdontologoDTO("Santiago", "Paz",
-                3455647));
-        Date date = new Date();
-        this.turnoService.registrarTurno(new Turno(paciente,odontologo,new Date()));
-    }
+        turno.setDate(new Date());
+        turno.setId(1);
+        this.turnoService.registrarTurno(turno);
 
-    @Test
-    public void cargarTurno(){
-        Assert.assertNotNull(turnoService.buscar(1));
     }
 
     @Test
@@ -60,9 +58,9 @@ public class TurnoServiceTest {
 
     @Test
     public void eliminarTurnoTest(){
-        this.cargarDataSet();
+        this.cargarDataTurno();
         turnoService.eliminar(1);
-        Assert.assertFalse(turnoService.buscar(1).isPresent());
+        Assert.assertTrue(turnoService.buscar(1)==null);
     }
 
 }

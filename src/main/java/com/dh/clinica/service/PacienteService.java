@@ -4,6 +4,7 @@ package com.dh.clinica.service;
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Paciente;
 import com.dh.clinica.model.PacienteDTO;
+import com.dh.clinica.model.Turno;
 import com.dh.clinica.repository.impl.PacienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class PacienteService {
 
     public Paciente actualizar(PacienteDTO pacienteDTO) throws ResourceNotFoundException {
         Optional<Paciente> pacienteDB = this.pacienteRepository.findById(pacienteDTO.getId());
-
+        Paciente paciente = pacienteDB.get();
         if(pacienteDB.isPresent()){
             Paciente pacienteActualizado = pacienteDB.get();
                 pacienteActualizado.setId(pacienteDTO.getId());
