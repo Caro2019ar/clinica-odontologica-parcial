@@ -1,11 +1,12 @@
 package com.dh.clinica.service;
 
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Turno;
 import com.dh.clinica.repository.impl.TurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -29,18 +30,21 @@ public class TurnoService {
         turnoRepository.deleteById(Integer.valueOf(id));
     }
 
-    public Turno actualizar(Turno turno){
+    public Turno actualizar(Turno turno) throws ResourceNotFoundException{
         Optional<Turno> turnoDB=this.turnoRepository.findById(turno.getId());
         Turno turnoActual = turnoDB.get();
-        turnoActual.setId(turno.getId());
-        turnoActual.setOdontologo(turno.getOdontologo());
-        turnoActual.getOdontologo().setId(turno.getOdontologo().getId());
-        turnoActual.setPaciente(turno.getPaciente());
-        turnoActual.getPaciente().setId(turno.getPaciente().getId());
-        turnoActual.setDate(turno.getDate());
-        turnoRepository.save(turnoActual);
-        return turnoActual;
-
+        if(turnoDB.isPresent()) {
+            turnoActual.setId(turno.getId());
+            turnoActual.setOdontologo(turno.getOdontologo());
+            turnoActual.getOdontologo().setId(turno.getOdontologo().getId());
+            turnoActual.setPaciente(turno.getPaciente());
+            turnoActual.getPaciente().setId(turno.getPaciente().getId());
+            turnoActual.setDate(turno.getDate());
+            turnoRepository.save(turnoActual);
+            return turnoActual;
+        } else {
+            throw new ResourceNotFoundException("Turno no encontrado");
+        }
     }
 
 

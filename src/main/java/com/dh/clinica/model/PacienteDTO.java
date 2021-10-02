@@ -25,4 +25,11 @@ public class PacienteDTO {
         this.fechaIngreso = fechaIngreso;
         this.domicilio = domicilio;
     }
+
+    public PacienteDTO(String nombre, String apellido, String dni, Domicilio domicilio) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.domicilio = domicilio;
+    }
 }

@@ -1,9 +1,9 @@
 package com.dh.clinica;
 
-
-
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Domicilio;
 import com.dh.clinica.model.Paciente;
+import com.dh.clinica.model.PacienteDTO;
 import com.dh.clinica.service.DomicilioService;
 import com.dh.clinica.service.PacienteService;
 
@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 
 import java.util.List;
+import java.util.Set;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -34,35 +35,41 @@ public class PacienteServiceTest {
     private DomicilioService domicilioService;
 
     public void cargarDataSet() {
-        Paciente p = this.pacienteService.guardar(new Paciente("Santiago", "Paz", "88888888",new Domicilio("Av Santa " +
-                "fe", "444", "CABA", "Buenos Aires")));
-        Paciente p1 = this.pacienteService.guardar(new Paciente("Micaela", "Perez", "99999999", new Domicilio("Av Avellaneda", "333", "CABA", "Buenos Aires")));
+        Paciente p =this.pacienteService.guardar(new PacienteDTO("Santiago", "Paz", "88888888",new Domicilio("Av " +
+                "Santa fe", "444", "CABA", "Buenos Aires")));
 
     }
 
     @Test
     public void agregarYBuscarPacienteTest() {
-        this.cargarDataSet();
-        Domicilio domicilio = new Domicilio("Calle", "123", "Temperley", "Buenos Aires");
-        Paciente p = pacienteService.guardar(new Paciente("Tomas", "Pereyra", "12345678", domicilio));
+        Paciente p = pacienteService.guardar(new PacienteDTO("Tomas","Silva","77.789.456-00",new Domicilio("Av " +
+                "Avellaneda", "333", "CABA", "Buenos Aires")));
 
         Assert.assertNotNull(pacienteService.buscar(p.getId()));
     }
 
     @Test
+    public void buscarPacientePorDni() throws ResourceNotFoundException {
+        Paciente p = pacienteService.guardar(new PacienteDTO("Tomas","Silva","77.789.456-00",new Domicilio("Av " +
+                "Avellaneda", "333", "CABA", "Buenos Aires")));
+
+        Assert.assertNotNull(pacienteService.buscarPacienteInformandoDni("77.789.456-00"));
+    }
+
+    @Test
     public void eliminarPacienteTest() {
-        pacienteService.eliminar(2);
-        Assert.assertTrue(pacienteService.buscar(2).isEmpty());
+        pacienteService.eliminar(1);
+        Assert.assertTrue(pacienteService.buscar(1)==null);
 
     }
 
     @Test
     public void traerTodos() {
+        this.cargarDataSet();
         List<Paciente> pacientes = pacienteService.buscarTodos();
         Assert.assertTrue(!pacientes.isEmpty());
-        Assert.assertTrue(pacientes.size() == 2);
-        System.out.println(pacientes);
     }
 
 
 }
+

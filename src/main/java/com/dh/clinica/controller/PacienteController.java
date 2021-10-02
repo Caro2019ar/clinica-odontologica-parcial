@@ -2,6 +2,7 @@ package com.dh.clinica.controller;
 
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Paciente;
+import com.dh.clinica.model.PacienteDTO;
 import com.dh.clinica.service.PacienteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,25 +26,25 @@ public class PacienteController {
     private PacienteService pacienteService;
 
     @PostMapping()
-    public ResponseEntity<Paciente> registrarPaciente(@RequestBody Paciente paciente) {
-        return ResponseEntity.ok(pacienteService.guardar(paciente));
+    public ResponseEntity<?> registrarPaciente(@RequestBody PacienteDTO pacienteDTO) {
+        return ResponseEntity.ok(pacienteService.guardar(pacienteDTO));
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscar(@PathVariable Integer id) {
-        Paciente paciente = pacienteService.buscar(id).orElse(null);
+    public ResponseEntity<PacienteDTO> buscar(@PathVariable Integer id) {
+        PacienteDTO pacienteDTO = pacienteService.buscar(id);
         logger.info("Paciente buscado "+pacienteService.buscar(id));
-        return ResponseEntity.ok(paciente);
+        return ResponseEntity.ok(pacienteDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Paciente> actualizar(@PathVariable("id") Integer id, @RequestBody Paciente paciente) throws ResourceNotFoundException {
-        paciente.setId(id);
+    @PatchMapping("/{id}")
+    public ResponseEntity<Paciente> actualizar(@PathVariable("id") Integer id, @RequestBody PacienteDTO pacienteDTO) throws ResourceNotFoundException {
+        pacienteDTO.setId(id);
         ResponseEntity<Paciente> response = null;
-        if (id!= null && pacienteService.buscar(paciente.getId()).isPresent()) {
+        if (id!= null && pacienteService.buscar(pacienteDTO.getId())!=null) {
             logger.info("Paciente actualizado: "+pacienteService.buscar(id));
-            response = ResponseEntity.ok(pacienteService.actualizar(paciente));
+            response = ResponseEntity.ok(pacienteService.actualizar(pacienteDTO));
         }
         else {
             logger.error("Error: no se pudo actualizar el paciente");
@@ -56,7 +57,7 @@ public class PacienteController {
     public ResponseEntity<String> eliminar(@PathVariable Integer id) {
         ResponseEntity<String> response = null;
 
-        if (pacienteService.buscar(id).isPresent()) {
+        if (pacienteService.buscar(id)!=null) {
             pacienteService.eliminar(id);
             logger.info("Paciente eliminado "+pacienteService.buscar(id));
             response = ResponseEntity.ok("Paciente eliminado con exito.");

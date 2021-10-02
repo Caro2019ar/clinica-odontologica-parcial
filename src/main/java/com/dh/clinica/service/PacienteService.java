@@ -3,16 +3,22 @@ package com.dh.clinica.service;
 
 import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Paciente;
+import com.dh.clinica.model.PacienteDTO;
 import com.dh.clinica.repository.impl.PacienteRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class PacienteService {
+    @Autowired
+    ObjectMapper mapper;
 
     private final PacienteRepository pacienteRepository;
 
@@ -21,17 +27,34 @@ public class PacienteService {
         this.pacienteRepository = pacienteRepository;
     }
 
-    public Paciente guardar(Paciente p) {
-        return pacienteRepository.save(p);
+    public Paciente guardar(PacienteDTO pacienteDTO) {
+        Paciente paciente =mapper.convertValue(pacienteDTO, Paciente.class);
+        return pacienteRepository.save(paciente);
     }
 
-    public Optional<Paciente> buscar(Integer id) {
-        return pacienteRepository.findById(Integer.valueOf(id));
+    public PacienteDTO buscar(Integer id) {
+        Optional<Paciente> paciente= pacienteRepository.findById(Integer.valueOf(id));
+        PacienteDTO pacienteDTO = mapper.convertValue(paciente,PacienteDTO.class);
+        return pacienteDTO;
     }
 
     public List<Paciente> buscarTodos() {
         return pacienteRepository.findAll();
     }
+
+
+    public Set<PacienteDTO> buscarPacienteInformandoDni(String dni) {
+        Set<Paciente> pacientes = pacienteRepository.buscarPacientePorDNI(dni);
+
+        Set<PacienteDTO> pacientesDTO = new HashSet<>();
+        for(Paciente paciente : pacientes){
+            PacienteDTO pacienteDTO = mapper.convertValue(paciente, PacienteDTO.class);
+            pacientesDTO.add(pacienteDTO);
+        }
+        return pacientesDTO;
+
+    }
+
 
     public void eliminar(Integer id) {
         pacienteRepository.deleteById(Integer.valueOf(id));
@@ -39,35 +62,35 @@ public class PacienteService {
 
 
 
-    public Paciente actualizar(Paciente p) throws ResourceNotFoundException {
-        Optional<Paciente> pacienteDB = this.pacienteRepository.findById(p.getId());
+    public Paciente actualizar(PacienteDTO pacienteDTO) throws ResourceNotFoundException {
+        Optional<Paciente> pacienteDB = this.pacienteRepository.findById(pacienteDTO.getId());
 
         if(pacienteDB.isPresent()){
             Paciente pacienteActualizado = pacienteDB.get();
-                pacienteActualizado.setId(p.getId());
-            if(p.getNombre()!=null){
-            pacienteActualizado.setNombre(p.getNombre());
+                pacienteActualizado.setId(pacienteDTO.getId());
+            if(pacienteDTO.getNombre()!=null){
+            pacienteActualizado.setNombre(pacienteDTO.getNombre());
             }
-            if(p.getApellido()!=null){
-            pacienteActualizado.setApellido(p.getApellido());
+            if(pacienteDTO.getApellido()!=null){
+            pacienteActualizado.setApellido(pacienteDTO.getApellido());
             }
-            if(p.getDni()!=null){
-            pacienteActualizado.setDni(p.getDni());
+            if(pacienteDTO.getDni()!=null){
+            pacienteActualizado.setDni(pacienteDTO.getDni());
             }
-            if(p.getDomicilio()!=null){
-            pacienteActualizado.getDomicilio().setId(p.getDomicilio().getId());
+            if(pacienteDTO.getDomicilio()!=null){
+            pacienteActualizado.getDomicilio().setId(pacienteDTO.getDomicilio().getId());
             }
-            if(p.getDomicilio().getCalle()!=null){
-            pacienteActualizado.getDomicilio().setCalle(p.getDomicilio().getCalle());
+            if(pacienteDTO.getDomicilio().getCalle()!=null){
+            pacienteActualizado.getDomicilio().setCalle(pacienteDTO.getDomicilio().getCalle());
             }
-            if(p.getDomicilio().getNumero()!=null){
-            pacienteActualizado.getDomicilio().setNumero(p.getDomicilio().getNumero());
+            if(pacienteDTO.getDomicilio().getNumero()!=null){
+            pacienteActualizado.getDomicilio().setNumero(pacienteDTO.getDomicilio().getNumero());
             }
-            if(p.getDomicilio().getLocalidad()!=null){
-            pacienteActualizado.getDomicilio().setLocalidad(p.getDomicilio().getLocalidad());
+            if(pacienteDTO.getDomicilio().getLocalidad()!=null){
+            pacienteActualizado.getDomicilio().setLocalidad(pacienteDTO.getDomicilio().getLocalidad());
             }
-            if(p.getDomicilio().getProvincia()!=null){
-            pacienteActualizado.getDomicilio().setProvincia(p.getDomicilio().getProvincia());
+            if(pacienteDTO.getDomicilio().getProvincia()!=null){
+            pacienteActualizado.getDomicilio().setProvincia(pacienteDTO.getDomicilio().getProvincia());
             }
             pacienteRepository.save(pacienteActualizado);
             return pacienteActualizado;

@@ -44,19 +44,7 @@ public class OdontologoController {
         return  ResponseEntity.ok(odontologoService.actualizar(odontologoDTO));
 
     }
-/*   @PutMapping(path="/{id}")
-    public ResponseEntity<Odontologo> actualizar(@PathVariable("id") Integer id,
-                                                 @RequestBody OdontologoDTO odontologoDTO) throws ResourceNotFoundException {
-        odontologoDTO.setId(id);
-        return  ResponseEntity.ok().body(this.odontologoService.actualizar(odontologoDTO));
 
-    }*/
-
-  /*  @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable("id") Integer id, @RequestBody String nombre) throws ResourceNotFoundException {
-        odontologoService.actualizarQuery(id,nombre);
-        return  ResponseEntity.ok(HttpStatus.OK);
-    }*/
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Integer id) throws ResourceNotFoundException{
         ResponseEntity<String> response = null;

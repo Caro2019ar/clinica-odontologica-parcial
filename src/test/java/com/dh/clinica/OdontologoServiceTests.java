@@ -7,7 +7,7 @@ import com.dh.clinica.service.OdontologoService;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +24,13 @@ public class OdontologoServiceTests {
     @Autowired
     private OdontologoService odontologoService;
 
-
+    @BeforeEach
     public void cargarDataSet() {
-        this.odontologoService.registrarOdontologo(new OdontologoDTO("Santiago", "Paz", 3455647));
+        odontologoService.registrarOdontologo(new OdontologoDTO("Santiago", "Paz", 3455647));
     }
 
     @Test
     public void agregarOdontologo() {
-        this.cargarDataSet();
         Odontologo odontologo = odontologoService.registrarOdontologo(new OdontologoDTO("Juan", "Ramirez", 348971960));
         Assert.assertTrue(odontologo.getId() != null);
 
@@ -46,10 +45,9 @@ public class OdontologoServiceTests {
 
     @Test
     public void traerTodos() {
+        this.cargarDataSet();
         List<Odontologo> odontologos = odontologoService.buscarTodos();
         Assert.assertTrue(!odontologos.isEmpty());
-        Assert.assertTrue(odontologos.size() == 1);
-        System.out.println(odontologos);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.dh.clinica.controller;
 
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Turno;
 import com.dh.clinica.service.OdontologoService;
 import com.dh.clinica.service.PacienteService;
@@ -27,7 +28,7 @@ public class TurnoController {
 
     @PostMapping
     public ResponseEntity<String> registrarTurno(@RequestBody Turno turno) {
-        if (pacienteService.buscar(turno.getPaciente().getId()).isPresent() && odontologoService.buscar(turno.getOdontologo().getId())!=null) {
+        if (pacienteService.buscar(turno.getPaciente().getId())!=null && odontologoService.buscar(turno.getOdontologo().getId())!=null) {
             turnoService.registrarTurno(turno);
             return ResponseEntity.ok("Turno registrado con exito.");
         } else {
@@ -56,7 +57,7 @@ public class TurnoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> actualizarTurno(@PathVariable("id") Integer id, @RequestBody Turno turno) {
+    public ResponseEntity<String> actualizarTurno(@PathVariable("id") Integer id, @RequestBody Turno turno) throws ResourceNotFoundException {
         if (turnoService.buscar(id).isPresent()) {
             turno.setId(id);
             turnoService.actualizar(turno);
