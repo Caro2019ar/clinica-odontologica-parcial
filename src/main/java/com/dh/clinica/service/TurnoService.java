@@ -47,9 +47,7 @@ public class TurnoService {
         }
     }
 
-
     public Optional<Turno> buscar(Integer id){
         return turnoRepository.findById(Integer.valueOf(id));
     }
-
 }
