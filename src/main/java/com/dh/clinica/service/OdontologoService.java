@@ -4,7 +4,6 @@ import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.model.Odontologo;
 import com.dh.clinica.model.OdontologoDTO;
 import com.dh.clinica.repository.impl.OdontologoRepository;
-import com.dh.clinica.util.Jsons;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,15 @@ public class OdontologoService {
     }
     public List<Odontologo> buscarTodos() {
         return odontologoRepository.findAll();
+    }
+
+    public OdontologoDTO buscarPorMatricula(Integer matricula){
+        OdontologoDTO odontologoDTO = null;
+        Optional<Odontologo> odontologo = odontologoRepository.findOdontoByMatricula(matricula);
+        if(odontologo.isPresent()){
+            odontologoDTO=mapper.convertValue(odontologo, OdontologoDTO.class);
+        }
+        return odontologoDTO;
     }
 
 
